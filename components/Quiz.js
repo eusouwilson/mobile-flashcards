@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
-import {  red, green } from '../utils/colors'
+import { red, green } from '../utils/colors'
 import Button from './Button'
 import TextButton from './TextButton'
 import { setLocalNotification, clearLocalNotifications } from '../utils/_notification'
@@ -39,15 +39,15 @@ class Quiz extends Component {
     const { navigation } = this.props
 
     Alert.alert(
-      'Sua pontuação: ' + Math.round( (correctAnswers / questions.length) * 100 ) + '%',
-      `Você tem ${correctAnswers} respostas corretas fora de ${questions.length} questões. Tente novamente?`,
+      'Your score: ' + Math.round( (correctAnswers / questions.length) * 100 ) + '%',
+      `You have ${correctAnswers} correct answers out of ${questions.length} questions. Try again?`,
       [
-          { text: 'Sim', onPress: () => this.setState({ 
+          { text: 'Yes', onPress: () => this.setState({ 
             index: 0, 
             correctAnswers: 0, 
             revealAnswer: false 
           })},
-          { text: 'Não', onPress: () => navigation.goBack()},
+          { text: 'No', onPress: () => navigation.goBack()},
       ],
       { cancelable: false }
     )
@@ -56,10 +56,10 @@ class Quiz extends Component {
   quizActions = (questions) => {
     return (
       <View>
-        <Button text='Coreto' backgroundColor={green} onPress={() => {
+        <Button text='Correct' backgroundColor={green} onPress={() => {
           this.setState({ correctAnswers: this.state.correctAnswers + 1 }, this.processQuiz)
         }} />
-        <Button text='Incorreto' backgroundColor={red} onPress={() => this.processQuiz()} />
+        <Button text='Incorrect' backgroundColor={red} onPress={() => this.processQuiz()} />
       </View>
     )
   }

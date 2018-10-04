@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux'
 import { receiveDecks } from '../actions'
 import { fetchDeckResults } from '../utils/api'
-import { white, black, gray } from '../utils/colors'
+import { black } from '../utils/colors'
 import { AppLoading } from 'expo'
 import Deck from './DeckCard.js'
 

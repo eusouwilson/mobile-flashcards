@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { 
   View, 
-  Text, 
   StyleSheet, 
-  TouchableOpacity, 
   TextInput,
   Alert,
 } from 'react-native'
@@ -12,7 +10,6 @@ import { connect } from 'react-redux'
 import Button from './Button'
 import { addCardToDeck, fetchDeckResults } from '../utils/api'
 import { addCard, receiveDecks } from '../actions'
-import { NavigationActions } from 'react-navigation'
 
 class AddCard extends Component {
 

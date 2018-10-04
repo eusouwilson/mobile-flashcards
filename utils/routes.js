@@ -13,14 +13,14 @@ const Tabs = TabNavigator ({
   Decks: {
     screen: Decks,
     navigationOptions: {
-      tabBarLabel: 'Baralhos',
+      tabBarLabel: 'Decks',
       tabBarIcon: ({ tintColor }) => <MaterialCommunityIcons name="cards" size={30} color={tintColor} />
     }
   },
   AddDeck: {
     screen: AddDeck,
     navigationOptions: {
-      tabBarLabel: 'Novo Baralho',
+      tabBarLabel: 'New Deck',
       tabBarIcon: ({ tintColor }) => <Entypo name="squared-plus" size={30} color={tintColor} />
     }
   }
