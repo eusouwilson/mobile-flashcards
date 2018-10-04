@@ -54,4 +54,3 @@ Note: There are some problems with npm 5.6 so it might be best if you use yarn.
     ├── routes.js # routing componente.
 ```
 
-## Create React App
