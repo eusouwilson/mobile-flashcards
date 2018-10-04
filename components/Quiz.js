@@ -1,0 +1,125 @@
+import React, { Component } from 'react'
+import { View, Text, StyleSheet, Alert } from 'react-native'
+import {  red, green } from '../utils/colors'
+import Button from './Button'
+import TextButton from './TextButton'
+import { setLocalNotification, clearLocalNotifications } from '../utils/_notification'
+
+class Quiz extends Component {
+  
+  static navigationOptions = ({ navigation }) => {
+		return {
+			title: 'Quiz'
+		}
+  }
+
+  state = {
+    index: 0,
+    correctAnswers: 0,
+    revealAnswer: false,
+  }
+
+  processQuiz = () => {
+    const { questions } = this.props.navigation.state.params
+    const { index } = this.state
+
+    if (index < questions.length - 1 ) {
+      this.setState({ index: index + 1 })
+    } else {
+      clearLocalNotifications()
+        .then(setLocalNotification)
+
+      this.showAlert(questions)
+    }
+
+  }
+
+  showAlert = (questions) => {
+    const { correctAnswers } = this.state
+    const { navigation } = this.props
+
+    Alert.alert(
+      'Sua pontuação: ' + Math.round( (correctAnswers / questions.length) * 100 ) + '%',
+      `Você tem ${correctAnswers} respostas corretas fora de ${questions.length} questões. Tente novamente?`,
+      [
+          { text: 'Sim', onPress: () => this.setState({ 
+            index: 0, 
+            correctAnswers: 0, 
+            revealAnswer: false 
+          })},
+          { text: 'Não', onPress: () => navigation.goBack()},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  quizActions = (questions) => {
+    return (
+      <View>
+        <Button text='Coreto' backgroundColor={green} onPress={() => {
+          this.setState({ correctAnswers: this.state.correctAnswers + 1 }, this.processQuiz)
+        }} />
+        <Button text='Incorreto' backgroundColor={red} onPress={() => this.processQuiz()} />
+      </View>
+    )
+  }
+
+  remainingCounter = (index, questions) => {
+    return (
+      <View style={styles.remaining}>
+        <Text style={styles.remainingText}>{index + 1}/{questions.length}</Text>
+      </View>
+    )
+  }
+
+  render() {
+		const { questions } = this.props.navigation.state.params
+    const { index, showResults, revealAnswer } = this.state
+
+    const card = revealAnswer ? (
+      <Text style={styles.card} key={questions[index].answer}>{questions[index].answer}</Text>
+    ) : (
+      <Text style={styles.card} key={questions[index].question}>{questions[index].question}</Text>
+    )
+
+    return (
+      <View style={{ flex: 1 }}>
+        {this.remainingCounter(index, questions)}
+        <View style={styles.container}>
+          {questions && questions[index] && (
+            <View>{card}</View>
+          )}
+          <TextButton style={{ padding: 20 }} onPress={() => this.setState({ revealAnswer: !revealAnswer })}>
+            {revealAnswer ? 'Question' : 'Answer'}
+          </TextButton>
+          {this.quizActions(questions)}
+        </View>
+      </View>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  remaining: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    padding: 20,
+  },
+  remainingText: {
+    textAlign: 'left',
+    fontSize: 16
+  },
+  card: {
+    fontSize: 30,
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 20,
+  }
+})
+
+export default Quiz
